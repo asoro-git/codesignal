@@ -34,6 +34,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 			todoList.innerHTML = "";
 
 			// TODO: Loop through the todos and create elements for each todo
+			todos.forEach((todo) => {
+				const li = createTodoElement(todo);
+				todoList.appendChild(li);
+			});
 		} catch (err) {
 			console.error("Error fetching todos:", err);
 		}
@@ -50,6 +54,11 @@ function createTodoElement(todo) {
 	// TODO: Create a checkbox element and set its type to "checkbox"
 	const checkbox = document.createElement("input");
 	checkbox.type = "checkbox";
+
+	checkbox.id = todo._id;
+	const label = document.createElement("label");
+	label.setAttribute("for", todo._id);
+	label.appendChild(document.createTextNode(todo.text));
 	// TODO: Set the checkbox checked property to match the todo's completed status
 	checkbox.checked = todo.completed;
 	// TODO: Apply strikethrough style to li if the todo is completed
@@ -57,12 +66,12 @@ function createTodoElement(todo) {
 		li.style.textDecoration = "line-through";
 	}
 	// TODO: Add an event listener to handle checkbox changes and update the backend
-	document.addEventListener("change", () => {
-		const res = (await = fetch("api/todos/todo._id", {
+	checkbox.addEventListener("change", async () => {
+		const res = await fetch(`/api/todos/${todo._id}`, {
 			method: "PATCH",
-			header: { "Content-Type": "application/json" },
-			body: { completed: checkbox.checked },
-		}));
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ completed: checkbox.checked }), // body needs to be stringified
+		});
 		if (!res.ok) {
 			checkbox.checked = !checkbox.checked;
 			throw Error(err.message);
@@ -74,7 +83,7 @@ function createTodoElement(todo) {
 
 	// Append the checkbox and todo text to the li element
 	li.appendChild(checkbox);
-	li.appendChild(document.createTextNode(todo.text));
+	li.appendChild(label);
 
 	// Return the created li element
 	return li;
