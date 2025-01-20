@@ -74,7 +74,10 @@ function createTodoElement(todo) {
 		});
 		if (!res.ok) {
 			checkbox.checked = !checkbox.checked;
-			throw Error(err.message);
+			throw new Error(
+				"error updating/ patching new data from client:",
+				res.status
+			);
 		}
 		li.style.textDecoration = checkbox.checked ? "line-through" : "none";
 	});
