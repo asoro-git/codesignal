@@ -20,22 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    addButton.addEventListener('click', async () => {
-        const newTodoText = newTodoInput.value.trim();
-        if (newTodoText) {
+    // TODO: Add the add button
+    addButton.addEventListener('click', async (e) => {
+        if (newTodoInput) {
             try {
-                // TODO: Make a fetch call with the method 'POST' to add a new todo item.
-                // Ensure to include the appropriate headers and body in the request.
-                newTodoInput.value = '';
-                loadTodo();
-            } catch (err) {
-                console.error('Error adding todo:', err);
+                await fetch('api/todos/', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: `${newTodoInput.value.trim()}`, completed: false })
+                })
+                if (!res.ok) { throw new Error(message) }
+            } catch {
+                console.log('Error adding new todos', err.message)
             }
+            newTodoInput.value = ""
+            loadTodos()
         }
-    });
 
+    })
     todoList.addEventListener('click', async (e) => {
-        if (e.target.tagName === 'LI' && confirm("Do you want to delete this item?")) {
+        if (e.target.tagName === 'LI' || confirm("Do you want to delete this item?")) {
             const todoId = e.target.dataset.id;
             try {
                 await fetch(`/api/todos/${todoId}`, {
@@ -45,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (err) {
                 console.error('Error deleting todo:', err);
             }
-        } else if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+        } else if (e.target.tagName === 'INPUT' || e.target.type === 'checkbox') {
             const todoId = e.target.parentElement.dataset.id;
             try {
                 await fetch(`/api/todos/${todoId}`, {
@@ -67,7 +71,8 @@ function createTodoElement(todo) {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = todo.completed;
-    
+
+    // Initial strikethrough based on the completed status
     if (todo.completed) {
         li.style.textDecoration = 'line-through';
     }
@@ -79,10 +84,12 @@ function createTodoElement(todo) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ completed: checkbox.checked })
             });
-            
+
+            // Apply or remove the strikethrough based on the checkbox state
             li.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
         } catch (err) {
             console.error('Error updating todo:', err);
+            // Revert the checkbox state if there is an error
             checkbox.checked = !checkbox.checked;
         }
     });
@@ -90,6 +97,6 @@ function createTodoElement(todo) {
     li.dataset.id = todo._id;
     li.appendChild(checkbox);
     li.appendChild(document.createTextNode(todo.text));
-    
+
     return li;
 }

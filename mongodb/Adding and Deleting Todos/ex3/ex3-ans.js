@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch(`/api/todos`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: newTodoText, completed: false })
+          body: JSON.stringify({ text: newTodoText, complete: checkbox.checked })
         })
         if (!res.ok) { throw new Error(error.message) }
         newTodoInput.value = '';
