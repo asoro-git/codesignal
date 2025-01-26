@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // TODO: Fetch the list of todos from the backend and display them in the UI
         // 1. Make a fetch call to '/api/todos'
         try {
-            await fetch('api/todos', {
+            await fetch('/api/todos', {
                 method: "GET"
             })
             // 2. Check if the response is ok
@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // 2. Include appropriate headers and body in the request
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 'text': newTodoText.value, 'completed': false })
+                    body: JSON.stringify({
+                        'text': newTodoText, 'completed': false
+                    })
                 })
             } catch {
                 console.error(message)
