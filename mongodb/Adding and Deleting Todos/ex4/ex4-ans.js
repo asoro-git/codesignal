@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Error adding new todos', err.message)
             }
             newTodoInput.value = ""
-            loadTodos()
+            loadTodos();
         }
 
     })
