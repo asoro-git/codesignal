@@ -1,0 +1,1 @@
+Stellar Navigator, let's make your welcome message dynamic! Change the starter code to include your title, "Space Explorer," in the welcome message. Define the title as a variable, and use it within the JSX.
