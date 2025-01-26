@@ -1,0 +1,1 @@
+Stellar work so far! Can you update our interstellar marquee to display the current Earth date? Apply what you've learned about embedding JavaScript expressions in JSX. Also, update the html file to include the root element.
