@@ -39,5 +39,6 @@ return M
 --     local bufnr = args.buf
 --     local client = vim.lsp.get_client_by_id(args.data.client_id)
 --     inlayhints.on_attach(client, bufnr)
+--
 --   end,
 -- })

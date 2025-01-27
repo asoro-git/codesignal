@@ -115,8 +115,73 @@ return {
       timeout = 5000,
     },
   },
-  -- terminal
+  -- Core nvim-cmp plugin
+  -- Snippet engine (required for nvim-cmp snippet support)
+  {
+    "L3MON4D3/LuaSnip",
+    enabled = true,
+    dependencies = {
+      -- VSCode-style snippet loader (optional, for community snippets)
+      "rafamadriz/friendly-snippets",
+    },
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
+  -- snippet function
+  {
+    "hrsh7th/nvim-cmp",
+    enabled = true,
+    dependencies = {
+      "L3MON4D3/LuaSnip", -- Snippet engine
+      "rafamadriz/friendly-snippets", -- Predefined snippets
+      "hrsh7th/cmp-nvim-lsp",
+      -- Snippet source for nvim-cmp
+      "saadparwaiz1/cmp_luasnip",
+      -- Buffer source for nvim-cmp
+      "hrsh7th/cmp-buffer",
+      -- Path source for nvim-cmp
+      "hrsh7th/cmp-path",
+      -- Command-line source for nvim-cmp (optional)
+      "hrsh7th/cmp-cmdline",
+    },
+    opts = function(_, opts)
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
 
+      -- Lazy-load friendly-snippets
+      require("luasnip.loaders.from_vscode").lazy_load()
+
+      opts.mapping = cmp.mapping.preset.insert({
+        -- using Tab to select snippet options, Enter (CR) to enter snippet, <S-Tab> to select prev option
+        ["<C-Space>"] = cmp.mapping.complete(), -- Trigger completion manually
+        ["<Tab>"] = cmp.mapping.confirm({ select = true }), -- Confirm selection
+        ["<CR>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+      })
+
+      -- Add snippet capabilities
+      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+        { name = "luasnip" },
+      }))
+    end,
+  },
   -- Dashboard
   {
     "folke/snacks.nvim",

@@ -28,7 +28,6 @@ return {
     end,
   },
   {
-    enabled = false,
     "folke/flash.nvim",
     opts = {
       search = {

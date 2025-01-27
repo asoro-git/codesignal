@@ -1,5 +1,8 @@
 return {
-  -- tools
+  -- lsp tools (to prepare the logic for code snippet function, code snippet function is in ui.lua)
+  -- treesitter used to help highlight syntax
+  -- lsp is like to help the engine under what to recommend, and snippet engine is to help render the result to user
+  -- sometimes lazyvim wants you to explicitly enable all the plugins all it won't load, not sure why
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
@@ -14,6 +17,27 @@ return {
         "css-lsp",
       })
     end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "bash",
+        "html",
+        "javascript",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "query",
+        "regex",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+      },
+    },
   },
   {
     "neovim/nvim-lspconfig",
