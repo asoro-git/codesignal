@@ -5,6 +5,16 @@ local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 local inlayHints = require("asoro.lsp")
 
+local bounc_cursor = function()
+  local cursor_position = vim.api.nvim_win_get_cursor(0) -- Save current cursor position
+  return cursor_position -- Perform `Yp`: Yank the current line and paste below
+end
+local Yp_func = function(cmd)
+  local cursor_posit = bounc_cursor()
+  vim.cmd(cmd) --"normal! Yp"
+  vim.api.nvim_win_set_cursor(0, cursor_posit) -- Restore cursor position
+end
+
 inlayHints.toggleInlayHints()
 
 keymap.set("n", "<leader>sx", require("telescope.builtin").resume, opts)
@@ -25,9 +35,16 @@ keymap.set("n", "sx", ":q<Return>", opts)
 
 -- F4 to set to local file
 keymap.set("n", "<F4>", ":lcd %:p:h:h", { noremap = true, silent = false })
-
 -- Duplicates
-keymap.set("n", "<A-d>", "Yp", opts)
+keymap.set("n", "<A-d>", function()
+  Yp_func("normal! Yp")
+end, opts)
+keymap.set("v", "<A-d>", function()
+  Yp_func("normal! Yp")
+end, opts)
+keymap.set("i", "<A-d>", function()
+  Yp_func("normal! Yp")
+end, opts)
 
 -- New line
 keymap.set("n", "<Return>", "o<Esc>", opts)

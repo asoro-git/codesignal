@@ -17,6 +17,23 @@
 --   end,
 -- })
 
+-- Detects cmd, if cursor enters cmd, resizes to 20
+vim.api.nvim_create_autocmd("WinEnter", {
+  callback = function()
+    if vim.bo.buftype == "terminal" then
+      vim.api.nvim_win_set_height(0, 20) -- Resize terminal to 15 lines when entering
+    end
+  end,
+})
+-- leaving shrinks it
+vim.api.nvim_create_autocmd("WinLeave", {
+  callback = function()
+    if vim.bo.buftype == "terminal" then
+      vim.api.nvim_win_set_height(0, 1) -- Resize terminal to 1 line when leaving
+    end
+  end,
+})
+
 -- Turn off paste mode when leaving insert
 vim.api.nvim_create_autocmd("InsertLeave", {
   pattern = "*",
