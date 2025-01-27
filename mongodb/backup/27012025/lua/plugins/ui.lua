@@ -117,22 +117,6 @@ return {
   },
   -- terminal
 
-  {
-
-    "akinsho/toggleterm.nvim",
-    config = function()
-      require("toggleterm").setup({
-        open_mapping = [[<c-\>]],
-        size = 1, -- Set terminal height to 1 line
-        on_open = function(term)
-          vim.api.nvim_set_option_value("number", false, { buf = term.bufnr }) -- Disable line numbers
-          vim.api.nvim_set_option_value("relativenumber", false, { buf = term.bufnr }) -- Disable relative numbers
-          vim.api.nvim_win_set_height(0, 1) -- Resize the window
-        end,
-      })
-    end,
-  },
-
   -- Dashboard
   {
     "folke/snacks.nvim",
