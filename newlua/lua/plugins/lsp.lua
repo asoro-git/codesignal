@@ -15,6 +15,8 @@ return {
       })
     end,
   },
+
+  -- lsp servers
   {
     "neovim/nvim-lspconfig",
     opts = {

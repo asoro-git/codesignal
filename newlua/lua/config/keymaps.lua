@@ -3,9 +3,6 @@
 -- Add any additional keymaps here
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
-local inlayHints = require("asoro.lsp")
-
-inlayHints.toggleInlayHints()
 
 keymap.set("n", "<leader>sx", require("telescope.builtin").resume, opts)
 
@@ -23,12 +20,6 @@ keymap.set("n", "ss", ":split<Return>", opts)
 keymap.set("n", "sv", ":vsplit<Return>", opts)
 keymap.set("n", "sx", ":q<Return>", opts)
 
--- F4 to set to local file
-keymap.set("n", "<F4>", ":lcd %:p:h:h", { noremap = true, silent = false })
-
--- Duplicates
-keymap.set("n", "<A-d>", "Yp", opts)
-
 -- New line
 keymap.set("n", "<Return>", "o<Esc>", opts)
 
@@ -37,16 +28,9 @@ keymap.set("n", "x", '"_x')
 keymap.set("n", "<Leader>p", '"0p')
 keymap.set("n", "<Leader>P", '"0P')
 keymap.set("v", "<Leader>p", '"0p')
-
---swap key to default not clip
-keymap.set("n", "c", '"_c')
-keymap.set("n", "C", '"_C')
-keymap.set("v", "C", '"_C')
-keymap.set("n", "<Leader>c", "c")
-keymap.set("n", "<Leader>C", "C")
-keymap.set("v", "<Leader>C", "C")
-
---swap key to default not clip
+keymap.set("n", "<Leader>c", '"_c')
+keymap.set("n", "<Leader>C", '"_C')
+keymap.set("v", "<Leader>C", '"_C')
 keymap.set("n", "d", '"_d')
 keymap.set("n", "D", '"_D')
 keymap.set("v", "d", '"_d')
@@ -71,14 +55,6 @@ keymap.set("n", "o", "o<Esc>^Da", opts)
 keymap.set("n", "O", "O<Esc>^Da", opts)
 
 -- toggle hint
-keymap.set("n", "<Leader>i", function()
-  inlayHints.toggleInlayHints()
-end, { desc = "Hints" })
-
---escape terminal
-keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Exit Terminal mode" })
-
--- F3 toggle terminal from folder
-keymap.set("n", "<F3>", function()
-  require("asoro.term").openTerm()
-end, { desc = "Terminal" })
+-- keymap.set("n", "<Leader>i", function()
+--     require("lsp.lsp").toggleInlayHints()
+-- end)
